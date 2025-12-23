@@ -12,6 +12,10 @@
             <h5 class="card-title">{{ recipe.title }}</h5>
             <p class="card-text">{{ recipe.description|truncatewords:10 }}</p>
             <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-outline-primary">Открыть</a>
+            {% if user == recipe.author %}
+              <a href="{% url 'recipe_update' recipe.pk %}" class="btn btn-outline-warning">Редактировать</a>
+              <a href="{% url 'recipe_delete' recipe.pk %}" class="btn btn-outline-danger">Удалить</a>
+            {% endif %}
           </div>
         </div>
       </div>
