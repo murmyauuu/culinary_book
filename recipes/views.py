@@ -23,6 +23,16 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Recipe
+    template_name = "recipes/recipe_confirm_delete.html"
+    success_url = reverse_lazy("recipe_list")
+
+    def test_func(self):
+        recipe = self.get_object()
+        return self.request.user == recipe.author
+
+
 class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Recipe
     form_class = RecipeForm
