@@ -4,6 +4,14 @@
 <div class="container">
   <h2 class="my-4">Мои рецепты</h2>
   <a href="{% url 'recipe_create' %}" class="btn btn-primary mb-3">Создать рецепт</a>
+
+  <form method="get" class="mb-4">
+    <div class="input-group">
+      <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" placeholder="Поиск по названию...">
+      <button class="btn btn-outline-secondary" type="submit">Найти</button>
+    </div>
+  </form>
+
   <div class="row">
     {% for recipe in recipes %}
       <div class="col-md-4 mb-3">
