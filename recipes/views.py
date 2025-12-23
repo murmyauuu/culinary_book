@@ -8,6 +8,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.db.models import Q
 from .models import Recipe
 from .forms import RecipeForm
 
@@ -50,7 +51,12 @@ class RecipeListView(LoginRequiredMixin, ListView):
     context_object_name = "recipes"
 
     def get_queryset(self):
-        return Recipe.objects.filter(author=self.request.user)
+        queryset = Recipe.objects.filter(author=self.request.user)
+        query = self.request.GET.get("q", "")
+        if query:
+            queryset = queryset.filter(title__icontains=query)
+
+        return queryset
 
 
 class RecipeDetailView(LoginRequiredMixin, DetailView):
