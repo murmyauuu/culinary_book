@@ -1,0 +1,33 @@
+<!-- templates/recipes/recipe_detail.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <h2>{{ recipe.title }}</h2>
+  <p>{{ recipe.description }}</p>
+  <p><strong>Время приготовления:</strong> {{ recipe.cooking_time_minutes }} мин</p>
+
+  <h4>Ингредиенты:</h4>
+  <ul>
+    {% for ingredient in recipe.ingredients.all %}
+      <li>{{ ingredient.ingredient.name }} — {{ ingredient.amount }} {% if ingredient.note %}({{ ingredient.note }}){% endif %}</li>
+    {% empty %}
+      <li>Ингредиенты не указаны</li>
+    {% endfor %}
+  </ul>
+
+  <h4>Шаги приготовления:</h4>
+  <ol>
+    {% for step in recipe.steps.all %}
+      <li>{{ step.text }}</li>
+    {% empty %}
+      <li>Шаги приготовления не указаны</li>
+    {% endfor %}
+  </ol>
+
+  {% if user == recipe.author %}
+    <a href="{% url 'recipe_update' recipe.pk %}" class="btn btn-outline-warning">Редактировать</a>
+    <a href="{% url 'recipe_delete' recipe.pk %}" class="btn btn-outline-danger">Удалить</a>
+  {% endif %}
+  <a href="{% url 'recipe_list' %}" class="btn btn-secondary">Назад к списку</a>
+</div>
+{% endblock %}
